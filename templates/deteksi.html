@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Face Detection with Audio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Robot Barista</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pilih-kopi">Opsi Kopi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/penempatan">Penempatan</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+      <h1 class="text-center">Face Detection with Audio</h1>
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+          <img
+            src="/video_feed"
+            id="video-feed"
+            class="img-fluid"
+            alt="Video Feed"
+          />
+          <p id="status" class="text-center mt-2 text-success">
+            Detection Active
+          </p>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <div class="col-md-6 text-center">
+          <button id="start-audio" class="btn btn-success">Start Audio</button>
+          <button id="stop-audio" class="btn btn-danger">Stop Audio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Start Audio and Detection
+      $("#start-audio").on("click", function () {
+        $.post("/start_audio", function (response) {
+          // alert(response);
+          $("#status")
+            .text("Detection Active")
+            .removeClass("text-danger")
+            .addClass("text-success");
+          $("#video-feed").attr("src", "/video_feed");
+        });
+      });
+
+      // Stop Audio and Detection
+      $("#stop-audio").on("click", function () {
+        $.post("/stop_audio", function (response) {
+          alert(response);
+          $("#status")
+            .text("Detection Stopped")
+            .removeClass("text-success")
+            .addClass("text-danger");
+          $("#video-feed").attr("src", ""); // Hentikan stream video
+        });
+      });
+    </script>
+  </body>
+</html>
